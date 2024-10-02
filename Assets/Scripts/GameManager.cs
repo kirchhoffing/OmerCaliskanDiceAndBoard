@@ -5,17 +5,16 @@ using System.IO;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;  // Singleton instance
-
     public GameObject applePrefab;
     public GameObject pearPrefab;
     public GameObject strawberryPrefab;
     public GameObject player;  // Karakterin referansı
+    public int playerTileIndex;  // Piyonun bulunduğu Tile'ın indeksi
 
     private string savePath;
 
     private void Awake()
     {
-        // Singleton yapı
         if (instance == null)
         {
             instance = this;
@@ -30,7 +29,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         savePath = Path.Combine(Application.persistentDataPath, "gameData.json");
-        Debug.Log("JSON dosyasının yolu: " + Application.persistentDataPath);
 
         if (File.Exists(savePath))
         {
@@ -41,13 +39,13 @@ public class GameManager : MonoBehaviour
             SaveGameData();  // Oyun verilerini kaydet (ilk defa açıldıysa)
         }
     }
-
+    
     public void SaveGameData()
     {
         GameData gameData = new GameData();
 
-        // Karakterin pozisyonunu kaydet
-        gameData.playerPosition = player.transform.position;
+        // Karakterin bulunduğu tile indeksini kaydet
+        gameData.playerTileIndex = playerTileIndex;
 
         // Meyvelerin pozisyonlarını kaydet
         foreach (GameObject fruit in GameObject.FindGameObjectsWithTag("Collectible"))
@@ -61,31 +59,29 @@ public class GameManager : MonoBehaviour
         // JSON'a kaydet
         string json = JsonUtility.ToJson(gameData, true);
         File.WriteAllText(savePath, json);
-        Debug.Log("Oyun verileri kaydedildi.");
     }
 
     private void LoadGameData()
     {
-        string json = File.ReadAllText(savePath);
-        GameData gameData = JsonUtility.FromJson<GameData>(json);
-
-        // Karakterin pozisyonunu yükle
-        player.transform.position = gameData.playerPosition;
-        Debug.Log($"Karakter pozisyonu yüklendi: {gameData.playerPosition}");
-
-        // Meyveleri sahneye geri yükle
-        foreach (FruitData fruit in gameData.fruits)
+        if (File.Exists(savePath))
         {
-            GameObject prefab = GetFruitPrefabByName(fruit.name);
-            if (prefab != null)
+            string json = File.ReadAllText(savePath);
+            GameData gameData = JsonUtility.FromJson<GameData>(json);
+
+            // Karakterin bulunduğu tile indeksini yükle
+            playerTileIndex = gameData.playerTileIndex;
+
+            // Meyveleri sahneye geri yükle
+            foreach (FruitData fruit in gameData.fruits)
             {
-                Instantiate(prefab, fruit.position, Quaternion.identity);
+                GameObject prefab = GetFruitPrefabByName(fruit.name);
+                if (prefab != null)
+                {
+                    Instantiate(prefab, fruit.position, Quaternion.identity);
+                }
             }
         }
-
-        Debug.Log("Oyun verileri yüklendi.");
     }
-
 
     private GameObject GetFruitPrefabByName(string name)
     {
@@ -106,7 +102,7 @@ public class GameManager : MonoBehaviour
 [System.Serializable]
 public class GameData
 {
-    public Vector3 playerPosition;
+    public int playerTileIndex;  // Karakterin bulunduğu Tile'ın indeksi
     public List<FruitData> fruits = new List<FruitData>();
 }
 

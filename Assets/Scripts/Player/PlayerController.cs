@@ -29,28 +29,24 @@ namespace Player
         {
             if (MapManager.instance != null && MapManager.instance.tiles.Count > 0)
             {
-                transform.position = MapManager.instance.tiles[0].position;
-                currentTileIndex = 0;
-                mapLoaded = true;  // Harita yüklendiğinde mapLoaded'ı true yapıyoruz
-                Debug.Log("Harita yüklendi ve karakter başlangıç pozisyonuna yerleşti.");
-            }
-            else
-            {
-                Debug.LogError("Harita yüklenmedi veya tile'lar eksik.");
+                int savedTileIndex = GameManager.instance.playerTileIndex;
+
+                if (savedTileIndex >= 0 && savedTileIndex < MapManager.instance.tiles.Count)
+                {
+                    transform.position = MapManager.instance.tiles[savedTileIndex].position;
+                    currentTileIndex = savedTileIndex;
+
+                    // Harita tamamen yüklendiğinde mapLoaded true yapılıyor
+                    mapLoaded = true;  
+                }
             }
         }
-
-
+        
         public void MovePlayer(int steps)
         {
             if (mapLoaded)
             {
-                Debug.Log($"Zar sonucu: {steps}, oyuncu hareket edecek.");
                 StartCoroutine(MoveStepByStep(steps));
-            }
-            else
-            {
-                Debug.LogWarning("Harita yüklenmeden oyuncu hareket edemez.");
             }
         }
 
@@ -73,23 +69,20 @@ namespace Player
                 }
 
                 yield return new WaitForSeconds(stepDelay);
-                Debug.Log($"Piyon {i + 1}. adımda hareket etti.");
             }
 
-            Debug.Log("Piyon son noktaya ulaştı.");
+            // Piyon her hamleyi tamamladıktan sonra playerTileIndex'i güncelle
+            GameManager.instance.playerTileIndex = currentTileIndex;
+
+            // Güncellenen Tile indeksini JSON'a kaydet
+            GameManager.instance.SaveGameData();
         }
-
-
+        
         public void AddToInventory(string itemName, int amount)
         {
             if (InventorySystem.instance != null)
             {
                 InventorySystem.instance.AddItem(itemName, amount);
-                Debug.Log($"Envantere {itemName} eklendi.");
-            }
-            else
-            {
-                Debug.LogError("InventorySystem instance bulunamadı.");
             }
         }
     }
