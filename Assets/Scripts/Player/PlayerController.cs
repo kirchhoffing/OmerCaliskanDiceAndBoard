@@ -15,32 +15,31 @@ namespace Player
 
         private void OnEnable()
         {
-            MapLoader.OnMapLoaded += MoveToStartPosition;  // Olay abonesi ol
+            MapLoader.OnMapLoaded += MoveToSavedPosition;
             DiceRoller.instance.OnDiceRolled += MovePlayer;
         }
 
         private void OnDisable()
         {
-            MapLoader.OnMapLoaded -= MoveToStartPosition;  // Olaydan çık
+            MapLoader.OnMapLoaded -= MoveToSavedPosition;
             DiceRoller.instance.OnDiceRolled -= MovePlayer;
         }
 
-        // Harita yüklendikten sonra bu fonksiyon çağrılır
-        private void MoveToStartPosition()
+        private void MoveToSavedPosition()
         {
-            // Haritanın yüklenip yüklenmediğini kontrol et
             if (MapManager.instance != null && MapManager.instance.tiles.Count > 0)
             {
                 transform.position = MapManager.instance.tiles[0].position;
                 currentTileIndex = 0;
-                mapLoaded = true;
-                Debug.Log("Oyuncu başlangıç pozisyonuna yerleşti: İlk kare.");
+                mapLoaded = true;  // Harita yüklendiğinde mapLoaded'ı true yapıyoruz
+                Debug.Log("Harita yüklendi ve karakter başlangıç pozisyonuna yerleşti.");
             }
             else
             {
                 Debug.LogError("Harita yüklenmedi veya tile'lar eksik.");
             }
         }
+
 
         public void MovePlayer(int steps)
         {
@@ -55,20 +54,16 @@ namespace Player
             }
         }
 
-
         private IEnumerator MoveStepByStep(int steps)
         {
             for (int i = 0; i < steps; i++)
             {
-                // Bir sonraki tile'a git
                 currentTileIndex = (currentTileIndex + 1) % MapManager.instance.tiles.Count;
                 Vector3 startPosition = transform.position;
                 Vector3 targetPosition = MapManager.instance.tiles[currentTileIndex].position;
 
-                // Karakterin hedef yöne bakmasını sağla
                 transform.LookAt(targetPosition);
 
-                // Piyonu adım adım Lerp ile hareket ettir
                 float time = 0;
                 while (time < 1)
                 {
@@ -77,7 +72,6 @@ namespace Player
                     yield return null;
                 }
 
-                // Her adım sonrası bekleme
                 yield return new WaitForSeconds(stepDelay);
                 Debug.Log($"Piyon {i + 1}. adımda hareket etti.");
             }
