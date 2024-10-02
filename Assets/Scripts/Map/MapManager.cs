@@ -20,11 +20,5 @@ namespace Map
                 Destroy(gameObject);
             }
         }
-
-        // Tile'ları eklemek için bir method
-        public void AddTile(Transform tileTransform)
-        {
-            tiles.Add(tileTransform);
-        }
     }
 }

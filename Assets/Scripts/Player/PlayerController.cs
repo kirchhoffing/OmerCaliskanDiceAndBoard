@@ -29,25 +29,22 @@ namespace Player
         {
             if (MapManager.instance != null && MapManager.instance.tiles.Count > 0)
             {
+                // Piyonu kaydedilen Tile indeksine göre taşı
                 int savedTileIndex = GameManager.instance.playerTileIndex;
 
                 if (savedTileIndex >= 0 && savedTileIndex < MapManager.instance.tiles.Count)
                 {
                     transform.position = MapManager.instance.tiles[savedTileIndex].position;
+                    transform.rotation = GameManager.instance.player.transform.rotation;  // Rotasyonu da yükle
                     currentTileIndex = savedTileIndex;
-
-                    // Harita tamamen yüklendiğinde mapLoaded true yapılıyor
-                    mapLoaded = true;  
                 }
             }
         }
+
         
         public void MovePlayer(int steps)
         {
-            if (mapLoaded)
-            {
-                StartCoroutine(MoveStepByStep(steps));
-            }
+            StartCoroutine(MoveStepByStep(steps));
         }
 
         private IEnumerator MoveStepByStep(int steps)

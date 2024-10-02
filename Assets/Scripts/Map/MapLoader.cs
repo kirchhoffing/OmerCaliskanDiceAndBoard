@@ -1,55 +1,73 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 namespace Map
 {
     public class MapLoader : MonoBehaviour
     {
         public static Action OnMapLoaded;  // Harita yüklendiğinde tetiklenecek Action
-        public GameObject tilePrefab;      // Tile prefab'ı
-        public TextAsset jsonFile;         // JSON dosyasını buraya ekleyeceğiz
 
-        void Start()
+        public TextAsset jsonFile;  // JSON dosyasını referans alıyoruz
+        public GameObject tilePrefab;  // Tile prefabı (altında TextMeshPro olacak)
+        
+        private void Start()
         {
-            LoadMapFromJson();  // JSON'dan map yükle
+            LoadMapFromJson();
         }
 
         private void LoadMapFromJson()
         {
-            // JSON verisini çöz
-            GameMap gameMap = JsonUtility.FromJson<GameMap>(jsonFile.text);
+            // JSON dosyasından verileri okuyoruz
+            GameMap mapData = JsonUtility.FromJson<GameMap>(jsonFile.text);
 
-            // Her tile üzerinde işlem yap
-            foreach (TileData tile in gameMap.tiles)
+            // Her bir tile için prefab oluşturuyoruz
+            foreach (Tile tile in mapData.tiles)
             {
-                // Tile'ın pozisyonunu JSON'dan al ve sahneye ekle
-                Vector3 tilePosition = tile.position;
+                // Tile pozisyonu
+                Vector3 tilePosition = new Vector3(tile.position.x, tile.position.y, tile.position.z);
 
-                // Tile prefab'ını belirtilen pozisyonda oluştur
+                // Tile prefabını oluştur
                 GameObject tileObject = Instantiate(tilePrefab, tilePosition, Quaternion.identity);
-                tileObject.name = $"Tile_{tile.id}";
 
-                // Tile'ı MapManager tiles listesine ekle
+                // Tile prefabının altındaki TextMeshPro'yu bul
+                TextMeshPro textMesh = tileObject.GetComponentInChildren<TextMeshPro>();
+
+                // Eğer content 'empty' değilse TextMeshPro'yu güncelle
+                if (tile.content != "empty" && textMesh != null)
+                {
+                    textMesh.text = tile.content;  // JSON'daki içerik ile TextMeshPro'yu güncelle
+                }
+
+                // Tile'ı MapManager'daki tiles listesine ekle
                 MapManager.instance.tiles.Add(tileObject.transform);
             }
-
-            // Harita yüklendikten sonra Action'ı tetikleyelim
+            
             OnMapLoaded?.Invoke();
         }
+        
     }
 
     [System.Serializable]
     public class GameMap
     {
-        public List<TileData> tiles;  // Tile'ları tutan liste
+        public List<Tile> tiles;
     }
 
     [System.Serializable]
-    public class TileData
+    public class Tile
     {
-        public int id;  // Tile'ın ID'si
-        public string content;  // İçerik (örneğin "5 apples")
-        public Vector3 position;  // Tile'ın pozisyonu
+        public int id;
+        public string content;
+        public TilePosition position;
+    }
+
+    [System.Serializable]
+    public class TilePosition
+    {
+        public float x;
+        public float y;
+        public float z;
     }
 }

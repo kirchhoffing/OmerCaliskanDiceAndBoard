@@ -215,8 +215,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24e504d2472e26844b520d66b63b525f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilePrefab: {fileID: 2059736332706127, guid: 62a53ebad16512448be5c22aff62feb3, type: 3}
   jsonFile: {fileID: 4900000, guid: cd8b8799b459abd4b812ddaa620e063d, type: 3}
+  tilePrefab: {fileID: 2059736332706127, guid: 62a53ebad16512448be5c22aff62feb3, type: 3}
 --- !u!114 &286117509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -608,10 +608,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e2d8b4cb0661f9438296fc7e0299bdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  applePrefab: {fileID: 2994618551468424215, guid: c82113ff7d911ef449556b07929d676a, type: 3}
-  pearPrefab: {fileID: 1958819952042744648, guid: 6d2ef495f817e6941af21894928b77fc, type: 3}
-  strawberryPrefab: {fileID: 502232889524890138, guid: e45e34828fc98ea4c8baf713feee6fc4, type: 3}
   player: {fileID: 1257888584}
+  playerTileIndex: 0
+  playerRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
