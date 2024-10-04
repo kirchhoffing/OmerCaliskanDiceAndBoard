@@ -1,50 +1,95 @@
+using System;
+using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class InventorySystem : MonoBehaviour
+namespace Player
 {
-    public static InventorySystem instance;
-
-    private Dictionary<string, int> inventory = new Dictionary<string, int>();
-
-    public delegate void InventoryUpdated();
-    public event InventoryUpdated OnInventoryUpdated;
-
-    private void Awake()
+    [System.Serializable]
+    public class InventoryItem
     {
-        if (instance == null)
+        public string itemName;
+        public int amount;
+    }
+
+    public class InventorySystem : MonoBehaviour
+    {
+        public static InventorySystem instance;
+
+        [SerializeField]
+        public List<InventoryItem> inventory = new List<InventoryItem>();
+
+        private Dictionary<string, InventoryItem> _inventoryDictionary = new Dictionary<string, InventoryItem>();
+
+        private string _savePath;
+
+        public static Action OnInventoryDataLoaded;
+
+        private void Awake()
         {
-            instance = this;
+            if (instance == null)
+            {
+                instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+
+            _savePath = Path.Combine(Application.persistentDataPath, "inventoryData.json");
         }
-        else
+
+        private void Start()
         {
-            Destroy(gameObject);
+            LoadInventoryData();
+        }
+
+        public void AddItem(string itemName, int amount)
+        {
+            InventoryItem itemInList = inventory.Find(i => i.itemName == itemName);
+
+            if (itemInList != null)
+            {
+                itemInList.amount += amount;
+            }
+            else
+            {
+                inventory.Add(new InventoryItem { itemName = itemName, amount = amount });
+            }
+
+            SaveInventoryData();
+            OnInventoryDataLoaded?.Invoke();
+        }
+
+        public void SaveInventoryData()
+        {
+            string json = JsonUtility.ToJson(new InventoryData(inventory), true);
+            File.WriteAllText(_savePath, json);
+        }
+
+        public void LoadInventoryData()
+        {
+            if (File.Exists(_savePath))
+            {
+                string json = File.ReadAllText(_savePath);
+                InventoryData data = JsonUtility.FromJson<InventoryData>(json);
+                inventory = data.items;
+
+                OnInventoryDataLoaded?.Invoke();
+            }
         }
     }
 
-    // Envantere item ekler
-    public void AddItem(string itemName, int amount)
+    [System.Serializable]
+    public class InventoryData
     {
-        if (inventory.ContainsKey(itemName))
-        {
-            inventory[itemName] += amount;
-        }
-        else
-        {
-            inventory[itemName] = amount;
-        }
+        public List<InventoryItem> items;
 
-        // Envanter güncellendiğinde event'i tetikle
-        OnInventoryUpdated?.Invoke();
-    }
-
-    // İstenen item'in kaç tane olduğunu döner
-    public int GetItemCount(string itemName)
-    {
-        if (inventory.ContainsKey(itemName))
+        public InventoryData(List<InventoryItem> items)
         {
-            return inventory[itemName];
+            this.items = items;
         }
-        return 0;
     }
 }

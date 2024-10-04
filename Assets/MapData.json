@@ -1,27 +1,27 @@
 {
   "tiles": [
-    { "id": 1, "content": "5x Apples", "position": { "x": 0, "y": 0, "z": 0 } },
-    { "id": 2, "content": "empty", "position": { "x": 1, "y": 0, "z": 0 } },
-    { "id": 3, "content": "3x Pears", "position": { "x": 2, "y": 0, "z": 0 } },
-    { "id": 4, "content": "empty", "position": { "x": 3, "y": 0, "z": 0 } },
-    { "id": 5, "content": "8x Strawberries", "position": { "x": 4, "y": 0, "z": 0 } },
+    { "id": 1, "content": "empty", "position": { "x": -1, "y": 0, "z": 0 } },
+    { "id": 2, "content": "5 Apples", "position": { "x": 0, "y": 0, "z": 0 } },
+    { "id": 3, "content": "3 Pears", "position": { "x": 1, "y": 0, "z": 0 } },
+    { "id": 4, "content": "empty", "position": { "x": 2, "y": 0, "z": 0 } },
+    { "id": 5, "content": "8 Strawberries", "position": { "x": 3, "y": 0, "z": 0 } },
+    { "id": 6, "content": "empty", "position": { "x": 4, "y": 0, "z": 0 } },
 
-    { "id": 6, "content": "empty", "position": { "x": 4, "y": 0, "z": 1 } },
-    { "id": 7, "content": "5x Apples", "position": { "x": 4, "y": 0, "z": 2 } },
-    { "id": 8, "content": "empty", "position": { "x": 4, "y": 0, "z": 3 } },
-    { "id": 9, "content": "3x Pears", "position": { "x": 4, "y": 0, "z": 4 } },
-    { "id": 10, "content": "empty", "position": { "x": 4, "y": 0, "z": 5 } },
+    { "id": 7, "content": "5 Apples", "position": { "x": 4, "y": 0, "z": 1 } },
+    { "id": 8, "content": "empty", "position": { "x": 4, "y": 0, "z": 2 } },
+    { "id": 9, "content": "3 Pears", "position": { "x": 4, "y": 0, "z": 3 } },
+    { "id": 10, "content": "empty", "position": { "x": 4, "y": 0, "z": 4 } },
+    { "id": 11, "content": "8 Strawberries", "position": { "x": 4, "y": 0, "z": 5 } },
 
-    { "id": 11, "content": "8x Strawberries", "position": { "x": 3, "y": 0, "z": 5 } },
-    { "id": 12, "content": "empty", "position": { "x": 2, "y": 0, "z": 5 } },
-    { "id": 13, "content": "5x Apples", "position": { "x": 1, "y": 0, "z": 5 } },
-    { "id": 14, "content": "empty", "position": { "x": 0, "y": 0, "z": 5 } },
-    { "id": 15, "content": "3x Pears", "position": { "x": -1, "y": 0, "z": 5 } },
+    { "id": 12, "content": "empty", "position": { "x": 3, "y": 0, "z": 5 } },
+    { "id": 13, "content": "5 Apples", "position": { "x": 2, "y": 0, "z": 5 } },
+    { "id": 14, "content": "empty", "position": { "x": 1, "y": 0, "z": 5 } },
+    { "id": 15, "content": "3 Pears", "position": { "x": 0, "y": 0, "z": 5 } },
+    { "id": 16, "content": "empty", "position": { "x": -1, "y": 0, "z": 5 } },
 
-    { "id": 16, "content": "empty", "position": { "x": -1, "y": 0, "z": 4 } },
-    { "id": 17, "content": "8x Strawberries", "position": { "x": -1, "y": 0, "z": 3 } },
-    { "id": 18, "content": "empty", "position": { "x": -1, "y": 0, "z": 2 } },
-    { "id": 19, "content": "5x Apples", "position": { "x": -1, "y": 0, "z": 1 } },
-    { "id": 20, "content": "empty", "position": { "x": -1, "y": 0, "z": 0 } }
+    { "id": 17, "content": "8 Strawberries", "position": { "x": -1, "y": 0, "z": 4 } },
+    { "id": 18, "content": "empty", "position": { "x": -1, "y": 0, "z": 3 } },
+    { "id": 19, "content": "5 Apples", "position": { "x": -1, "y": 0, "z": 2 } },
+    { "id": 20, "content": "empty", "position": { "x": -1, "y": 0, "z": 1 } }
   ]
 }

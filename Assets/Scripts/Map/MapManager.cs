@@ -5,15 +5,15 @@ namespace Map
 {
     public class MapManager : MonoBehaviour
     {
-        public static MapManager instance;  // Singleton erişimi için
+        public static MapManager instance;
 
-        public List<Transform> tiles = new List<Transform>();  // Tüm Tile'ların listesi
+        public List<Transform> tiles = new List<Transform>();
 
         private void Awake()
         {
             if (instance == null)
             {
-                instance = this;  // Singleton instance oluştur
+                instance = this;
             }
             else
             {

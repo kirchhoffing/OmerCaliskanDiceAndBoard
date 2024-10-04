@@ -1,13 +1,12 @@
-using UnityEngine;
-using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance;  // Singleton instance
-    public GameObject player;  // Karakterin referansı
-    public int playerTileIndex;  // Piyonun bulunduğu Tile'ın indeksi
-    public Quaternion playerRotation;  // Karakterin rotasyonu
+    public static GameManager instance;
+    public int playerTileIndex;
+    public GameObject player;
+    public Quaternion playerRotation;
 
     private string savePath;
 
@@ -16,39 +15,15 @@ public class GameManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);  // GameManager'ı sahne geçişlerinde koru
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Destroy(gameObject);  // Zaten bir instance varsa, yeni objeyi yok et
+            Destroy(gameObject);
         }
-    }
 
-    private void Start()
-    {
         savePath = Path.Combine(Application.persistentDataPath, "gameData.json");
-
-        if (File.Exists(savePath))
-        {
-            LoadGameData();  // Oyun verilerini yükle
-        }
-        else
-        {
-            SaveGameData();  // Oyun verilerini kaydet (ilk defa açıldıysa)
-        }
-    }
-
-    public void SaveGameData()
-    {
-        GameData gameData = new GameData();
-
-        // Karakterin bulunduğu tile indeksini ve rotasyonunu kaydet
-        gameData.playerTileIndex = playerTileIndex;
-        gameData.playerRotation = player.transform.rotation;
-
-        // JSON'a kaydet
-        string json = JsonUtility.ToJson(gameData, true);
-        File.WriteAllText(savePath, json);
+        LoadGameData();
     }
 
     private void LoadGameData()
@@ -58,16 +33,33 @@ public class GameManager : MonoBehaviour
             string json = File.ReadAllText(savePath);
             GameData gameData = JsonUtility.FromJson<GameData>(json);
 
-            // Karakterin bulunduğu tile indeksini ve rotasyonunu yükle
             playerTileIndex = gameData.playerTileIndex;
-            player.transform.rotation = gameData.playerRotation;
+            playerRotation = new Quaternion(gameData.rotationX, gameData.rotationY, gameData.rotationZ, gameData.rotationW);
         }
+    }
+
+    public void SaveGameData()
+    {
+        GameData gameData = new GameData();
+        gameData.playerTileIndex = playerTileIndex;
+
+        var rotation = player.transform.rotation;
+        gameData.rotationX = rotation.x;
+        gameData.rotationY = rotation.y;
+        gameData.rotationZ = rotation.z;
+        gameData.rotationW = rotation.w;
+
+        string json = JsonUtility.ToJson(gameData, true);
+        File.WriteAllText(savePath, json);
     }
 }
 
 [System.Serializable]
 public class GameData
 {
-    public int playerTileIndex;  // Karakterin bulunduğu Tile'ın indeksi
-    public Quaternion playerRotation;  // Karakterin rotasyonu
+    public int playerTileIndex;
+    public float rotationX;
+    public float rotationY;
+    public float rotationZ;
+    public float rotationW;
 }
