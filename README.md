@@ -6,7 +6,7 @@ Particlelar ve diğer hissiyatlar konusunda 3. parti kullanılmaması gerektiği
 
 Bizim çalışma sistemimizde particleları Game Artist arkadaşlarımız yapıyordu. Ben de az çok anlıyorum ama haftasonu bakamayacağım için burada bıraktım.
 
-Bu aralar hem kendimin hem ailemin çok fazla hastane işleri olduğu için vaktim yettiğince toplamda 6-7 saat civarı uğraştım.
+Toplamda 6-7 saat civarı harcadım.
 
 Kodların daha temiz yazılabileceğinin farkındayım fakat kısa bir case study olduğu ve vaktim kısıtlı olduğu için buna orta seviyede dikkat edebildim.
 
